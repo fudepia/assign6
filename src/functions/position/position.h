@@ -10,18 +10,16 @@ public:
     Position();
     ~Position();
 
-    int getX();
-    int getY();
+    int getX() const;
+    int getY() const;
+    int incrX();
+    int incrY();
+    int decrX();
+    int decrY();
     
     // add functions what you need
 
     bool operator==(const Position &other) const;
-
-
-
-
-
-
 
 
 };

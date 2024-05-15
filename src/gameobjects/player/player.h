@@ -7,13 +7,16 @@
 
 using namespace PlayerState;
 
-class Player: public GameObject {
+class Player:public GameObject {
     int healPower = 8;
 public:
     Player(Position initialPosition);
     ~Player();
 
-    MoveState move();
+    //orig
+    //MoveState move();
+    MoveState move(GameState::InputState s);
+    MoveState moveRel(Position ds);
     
     void render();
 };

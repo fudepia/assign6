@@ -5,8 +5,9 @@
 #include <string>
 
 class GameObject {
-private:
+protected:
     Position position;
+private:
 
     int health;
     int maxHealth;
