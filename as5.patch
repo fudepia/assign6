@@ -1,0 +1,42 @@
+diff --git a/src/controller/controller.cpp b/src/controller/controller.cpp
+index 64940b3..fedb14a 100644
+--- a/src/controller/controller.cpp
++++ b/src/controller/controller.cpp
+@@ -36,7 +36,11 @@ RunningState Controller::run(InputState s) {
+ 		case ACTION_DOWN:
+ 		case ACTION_LEFT:
+ 		case ACTION_RIGHT: {
+-					   player->move(s);
++							   auto orig=player->getPosition();
++							   player->move(s);
++							   auto newPosi=player->getPosition();
++							   if(!rooms[currentRoomIndex]->walkable(newPosi))
++								   player->setPosition(Position(orig));
+ 				   }break;
+ 		case ACTION_CONFIRN: {
+ 				     }break;
+diff --git a/src/gameobjects/room/room.cpp b/src/gameobjects/room/room.cpp
+index 1b9b048..33a29a6 100644
+--- a/src/gameobjects/room/room.cpp
++++ b/src/gameobjects/room/room.cpp
+@@ -23,7 +23,19 @@ Room::Room(RoomData data):roomID(data.id), roomName(data.name), roomDescription(
+ 
+ 
+ 
+-
++bool Room::walkable(Position p) {
++	switch(defaultRoomObjectMap[p.getY()][p.getX()]) {
++		case OBJECT_NONE:
++		case OBJECT_DOOR:
++		case OBJECT_GRASS:
++			return true;
++		case OBJECT_WALL:
++		case OBJECT_ROCK:
++		case OBJECT_WATER:
++			return false;
++	}
++	return true;
++}
+ 
+ 
+

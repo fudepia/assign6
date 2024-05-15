@@ -23,7 +23,19 @@ Room::Room(RoomData data):roomID(data.id), roomName(data.name), roomDescription(
 
 
 
-
+bool Room::walkable(Position p) {
+	switch(defaultRoomObjectMap[p.getY()][p.getX()]) {
+		case OBJECT_NONE:
+		case OBJECT_DOOR:
+		case OBJECT_GRASS:
+			return true;
+		case OBJECT_WALL:
+		case OBJECT_ROCK:
+		case OBJECT_WATER:
+			return false;
+	}
+	return true;
+}
 
 
 

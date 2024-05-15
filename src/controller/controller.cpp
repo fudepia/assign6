@@ -54,25 +54,29 @@ Controller::~Controller() {
 
 
 RunningState Controller::run(InputState s) {
-	switch(s) {
-		case ACTION_NONE: {}break;
-		case ACTION_UP:
-		case ACTION_DOWN:
-		case ACTION_LEFT:
-		case ACTION_RIGHT: {
-					   player->move(s);
-				   }break;
-		case ACTION_CONFIRN: {
-				     }break;
-		case ACTION_PAUSE: {
-				   }break;
-		case ACTION_EXIT: { return EXIT;
-				  }break;
-		case ACTION_INIT: {
-				  }break;
-	}
-	render();
-	return PLAY;
+    switch(s) {
+	case ACTION_NONE: {}break;
+	case ACTION_UP:
+	case ACTION_DOWN:
+	case ACTION_LEFT:
+	case ACTION_RIGHT: {
+			       auto orig=player->getPosition();
+			       player->move(s);
+			       auto newPosi=player->getPosition();
+			       if(!rooms[currentRoomIndex]->walkable(newPosi))
+				   player->setPosition(Position(orig));
+			   }break;
+	case ACTION_CONFIRN: {
+			     }break;
+	case ACTION_PAUSE: {
+			   }break;
+	case ACTION_EXIT: { return EXIT;
+			  }break;
+	case ACTION_INIT: {
+			  }break;
+    }
+    render();
+    return PLAY;
 }
 
 
