@@ -8,7 +8,7 @@ Position::~Position()=default;
 bool Position::operator==(const Position &other) const { return positionX==other.getX() && positionY==other.getY(); }
 int Position::getX() const { return positionX; }
 int Position::getY() const { return positionY; }
-int Position::incrX() { return ++positionX; }
-int Position::incrY() { return ++positionY; }
-int Position::decrX() { return --positionX; }
-int Position::decrY() { return --positionY; }
+int Position::incrX() { if(positionX<34) ++positionX; return positionX; }//else return positionX=0; }
+int Position::incrY() { if(positionY<19) ++positionY; return positionY; }//else return positionY=0; }
+int Position::decrX() { if(positionX>0) --positionX; return positionX; }//else return positionX=34; }
+int Position::decrY() { if(positionY>0) --positionY; return positionY; }//else return positionY=19; }

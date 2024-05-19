@@ -5,7 +5,7 @@
 #include <string>
 
 class GameObject {
-protected:
+private:
     Position position;
 private:
 

@@ -13,11 +13,34 @@ public:
     Player(Position initialPosition);
     ~Player();
 
-    //orig
-    //MoveState move();
     MoveState move(GameState::InputState s);
-    MoveState moveRel(Position ds);
-    
+    template<typename F>
+    MoveState move(GameState::InputState s, F check) {
+        using namespace GameState;
+        auto newPos=getPosition();
+        auto ret = MOVE;
+        switch(s) {
+            case ACTION_UP: {
+                                newPos.decrY();
+                            }break;
+            case ACTION_DOWN: {
+                                  newPos.incrY();
+                              }break;
+            case ACTION_LEFT: {
+                                  if(newPos.getX()==0) ret = LEFTROOM;
+                                  newPos.decrX();
+                              }break;
+            case ACTION_RIGHT: {
+                                   if(newPos.getX()==34) ret = RIGHTROOM;
+                                   newPos.incrX();
+                               }break;
+            default: break;
+        }
+        // TODO: Check go-ability here
+        if(check(newPos)) setPosition(newPos);
+        return ret;
+    }
+
     void render();
 };
 

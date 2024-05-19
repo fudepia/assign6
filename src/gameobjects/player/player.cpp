@@ -14,22 +14,29 @@ Player::~Player() = default;
 
 MoveState Player::move(GameState::InputState s) {
 	using namespace GameState;
+    auto newPos=getPosition();
+    auto ret = MOVE;
 	switch(s) {
 		case ACTION_UP: {
-					position.decrY();
+					newPos.decrY();
 				}break;
 		case ACTION_DOWN: {
-					  position.incrY();
+					  newPos.incrY();
 				  }break;
 		case ACTION_LEFT: {
-					  position.decrX();
+                      if(newPos.getX()==0) ret = LEFTROOM;
+					  newPos.decrX();
 				  }break;
 		case ACTION_RIGHT: {
-					   position.incrX();
+					   if(newPos.getX()==34) ret = RIGHTROOM;
+                       newPos.incrX();
 				   }break;
 		default: break;
 	}
-	return MOVE;
+    // TODO: Check go-ability here
+    //if(check(newPos))
+        setPosition(newPos);
+	return ret;
 }
 
 // render

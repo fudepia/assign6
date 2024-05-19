@@ -12,12 +12,12 @@
 using namespace RoomState;
 
 class Room {
+    public:
+        const int roomID;
+        const std::string roomName;
+        const std::string roomDescription;
+        const Position playerInitialPosition;
     private:
-        int roomID;
-        std::string roomName;
-        std::string roomDescription;
-
-        Position playerInitialPosition;
 
         std::vector<Enemy *> enemies;
 

@@ -7,25 +7,64 @@
 
 Controller::Controller() {
     const int defaultRoomIndex = 0;
-    RoomData roomData = ROOM_DATA[defaultRoomIndex];
 
     // initialize class
-    auto rPtr = new Room(roomData);
-    rooms.insert({defaultRoomIndex, rPtr});
+    for(size_t i=0; i<ROOM_DATA_SZ; ++i) {
+        RoomData roomData = ROOM_DATA[i];
+        auto rPtr = new Room(roomData);
+        rooms.insert({i, rPtr});
+    }
     currentRoomIndex=defaultRoomIndex;
 
     state=PROCESS_MOVEMENT; //?
-    player=new Player(Position{16,10});
-
-    
+    player=new Player(rooms[defaultRoomIndex]->playerInitialPosition);
 }
 
-RunningState Controller::run(InputState action) {
+RunningState Controller::run(InputState s) {
 
     switch (state) {
     case PROCESS_MOVEMENT: {
-        
+    switch(s) {
+        case ACTION_NONE: {}break;
+        case ACTION_UP:
+        case ACTION_DOWN:
+        case ACTION_LEFT:
+        case ACTION_RIGHT: {
+                               auto orig=player->getPosition();
+                               switch(player->move(s,
+                                           [&](Position pos) { return rooms[currentRoomIndex]->walkable(pos); } // check lambda
+                                      )) {
+                                   case MOVE:
+                                       break;
+                                   case LEFTROOM: {
+                                        --currentRoomIndex;
+                                        if(currentRoomIndex<0) currentRoomIndex+=rooms.size();
+                                            player->setPosition(Position{34, player->getPosition().getY()});
+                                                  } break;
+                                   case RIGHTROOM: {
+                                        ++currentRoomIndex;
+                                        if((size_t)currentRoomIndex>=rooms.size()) currentRoomIndex-=rooms.size();
+                                            std::cerr << "next\n"<<currentRoomIndex;
+                                            player->setPosition(Position{0, player->getPosition().getY()});
+                                                   } break;
+                               }
+                           }break;
+        case ACTION_CONFIRN: {
+                             }break;
+        case ACTION_PAUSE: {
+                           }break;
+        case ACTION_EXIT: { return EXIT;
+                          }break;
+        case ACTION_INIT: {
+                          }break;
+    }
         // add your code to implement the enemy movement
+    auto& room=rooms[currentRoomIndex];
+        for(auto &i:room->getEnemies()) {
+            auto newPos=i->nextPosition();
+            if(!(newPos==i->getPosition()))
+                if(room->walkable(newPos)) i->setPosition(newPos);
+        }
 
         break;
     }
@@ -45,41 +84,9 @@ RunningState Controller::run(InputState action) {
 
 
 Controller::~Controller() {
-	free(player);
-	for(const auto&[i,p]:rooms) free(p);
+	delete player;
+	for(const auto&[i,p]:rooms) delete p;
 }
-
-// Add your code to implement the Controller class here.
-
-
-
-RunningState Controller::run(InputState s) {
-    switch(s) {
-	case ACTION_NONE: {}break;
-	case ACTION_UP:
-	case ACTION_DOWN:
-	case ACTION_LEFT:
-	case ACTION_RIGHT: {
-			       auto orig=player->getPosition();
-			       player->move(s);
-			       auto newPosi=player->getPosition();
-			       if(!rooms[currentRoomIndex]->walkable(newPosi))
-				   player->setPosition(Position(orig));
-			   }break;
-	case ACTION_CONFIRN: {
-			     }break;
-	case ACTION_PAUSE: {
-			   }break;
-	case ACTION_EXIT: { return EXIT;
-			  }break;
-	case ACTION_INIT: {
-			  }break;
-    }
-    render();
-    return PLAY;
-}
-
-
 
 
 
