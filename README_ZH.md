@@ -100,7 +100,7 @@ or https://github.com/oopnccucs/assign6
 
 
 ## 作業繳交方式
-在OOP主機中，assign5資料夾下，輸入：
+在OOP主機中，assign6資料夾下，輸入：
 ```
 /usr/local/class/oop/bin/submit 6
 ```

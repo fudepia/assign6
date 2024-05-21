@@ -95,13 +95,13 @@ Dragons do not move. Currently, no action is taken when the player overlaps with
 
 
 ## Assignment Directory
-`/usr/local/class/oop/assign/assign5`
+`/usr/local/class/oop/assign/assign6`
 
 
 ## Submission Instructions
-In the OOP host, navigate to the assign5 directory and enter the following command:
+In the OOP host, navigate to the assign6 directory and enter the following command:
 ```
-/usr/local/class/oop/bin/submit 5
+/usr/local/class/oop/bin/submit 6
 ```
 to submit this assignment.
 
